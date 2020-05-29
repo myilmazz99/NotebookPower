@@ -1,5 +1,4 @@
-﻿using Core.Business.Results;
-using Core.DataAccess.Abstract;
+﻿using Core.DataAccess.Abstract;
 using Core.Entities.Abstract;
 using Microsoft.EntityFrameworkCore;
 using System;

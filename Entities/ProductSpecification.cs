@@ -9,7 +9,7 @@ namespace Entities
     {
         public int ProductId { get; set; }
         public int SpecificationId { get; set; }
-        public List<Product> Products { get; set; }
-        public List<Specification> Specifications { get; set; }
+        public Product Product { get; set; }
+        public Specification Specification { get; set; }
     }
 }

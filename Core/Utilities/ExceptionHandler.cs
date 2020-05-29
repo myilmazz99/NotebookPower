@@ -2,21 +2,22 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Core.Utilities
 {
     public static class ExceptionHandler
     {
-        public static Result HandleException(Action action)
+        public static IResult HandleException(Action action)
         {
 			try
 			{
 				action.Invoke();
-				return new SuccessResult("");
+				return new SuccessResult();
 			}
 			catch (Exception ex)
 			{
-				return new ErrorResult(ex.Message);
+				throw ex;
 			}
         }
     }
