@@ -1,4 +1,5 @@
 ﻿using Entities;
+using Entities.Dtos;
 using FluentValidation;
 using System;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ using System.Text;
 
 namespace Business.Utilities.FluentValidation
 {
-    public class ProductValidation : AbstractValidator<Product>
+    public class ProductValidation : AbstractValidator<ProductDto>
     {
         public ProductValidation()
         {

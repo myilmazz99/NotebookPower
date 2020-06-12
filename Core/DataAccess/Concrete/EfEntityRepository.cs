@@ -14,25 +14,26 @@ namespace Core.DataAccess.Concrete
         where TEntity : class, IEntity
         where TContext : DbContext, new()
     {
-        public async Task AddAsync(TEntity entity)
+        public virtual async Task AddAsync(TEntity entity)
         {
             using (var context = new TContext())
             {
-                await context.Set<TEntity>().AddAsync(entity);
-                await context.SaveChangesAsync();
+               await context.Set<TEntity>().AddAsync(entity);
+               await context.SaveChangesAsync();
             }
         }
 
-        public async Task DeleteAsync(TEntity entity)
+        public virtual async Task DeleteAsync(int id)
         {
             using (var context = new TContext())
             {
+                var entity = await context.Set<TEntity>().FindAsync(id);
                 context.Set<TEntity>().Remove(entity);
                 await context.SaveChangesAsync();
             }
         }
 
-        public async Task<TEntity> Get(Expression<Func<TEntity, bool>> filter)
+        public virtual async Task<TEntity> Get(Expression<Func<TEntity, bool>> filter)
         {
             using (var context = new TContext())
             {
@@ -40,7 +41,7 @@ namespace Core.DataAccess.Concrete
             }
         }
 
-        public async Task<List<TEntity>> GetAll(Expression<Func<TEntity, bool>> filter = null)
+        public virtual async Task<List<TEntity>> GetAll(Expression<Func<TEntity, bool>> filter = null)
         {
             using (var context = new TContext())
             {
@@ -50,7 +51,7 @@ namespace Core.DataAccess.Concrete
             }
         }
 
-        public async Task UpdateAsync(TEntity entity)
+        public virtual async Task UpdateAsync(TEntity entity)
         {
             using (var context = new TContext())
             {

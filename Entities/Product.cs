@@ -7,12 +7,19 @@ namespace Entities
 {
     public class Product : IEntity
     {
+        public Product()
+        {
+            DateAdded = DateTime.Now;
+        }
+
         public int Id { get; set; }
         public string ProductName { get; set; }
         public string ProductDescription { get; set; }
         public int Stock { get; set; }
         public double OldPrice { get; set; }
         public double NewPrice { get; set; }
+        public int OrderCount { get; set; }
+        public DateTime DateAdded { get; set; }
         public int CategoryId { get; set; }
         public Category Category { get; set; }
         public List<Comment> Comments { get; set; }

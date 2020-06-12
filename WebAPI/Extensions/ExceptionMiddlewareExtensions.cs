@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Core.Utilities;
+using FluentValidation;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -17,12 +19,25 @@ namespace WebAPI.Extensions
                 appError.Run(async context =>
                 {
                     context.Response.StatusCode = 400;
+                    context.Response.ContentType = "application/json";
 
                     var contextFeature = context.Features.Get<IExceptionHandlerFeature>();
                     if (contextFeature != null)
                     {
-                        //logError
-                        await context.Response.WriteAsync(contextFeature.Error.Message);
+                        if(contextFeature.Error is ValidationException)
+                        {
+                            await context.Response.WriteAsync(contextFeature.Error.Message);
+                        }
+                        else if(contextFeature.Error is AuthException)
+                        {
+                            await context.Response.WriteAsync(contextFeature.Error.Message);
+                        }
+                        else
+                        {
+                            await context.Response.WriteAsync("Beklenmedik bir hata oluştu. Lütfen daha sonra tekrar deneyiniz.");
+                            //log
+                        }
+
                     }
                 });
             });

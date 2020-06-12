@@ -1,14 +1,14 @@
-﻿using Core.Utilities.Results;
+﻿using Core.Entities.Concrete;
+using Core.Security;
 using Entities.Dtos;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace Business.Abstract
+namespace Business.Concrete
 {
     public interface IAccountService
     {
-        IResult Add(UserDto user);
+        Task<UserDto> GetUserCredentials(string userId);
+        Task<AccessToken> Login(UserDto user);
+        Task Register(UserDto user);
     }
 }

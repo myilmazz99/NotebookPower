@@ -11,7 +11,7 @@ namespace Core.DataAccess.Abstract
     {
         Task AddAsync(T entity);
         Task UpdateAsync(T entity);
-        Task DeleteAsync(T entity);
+        Task DeleteAsync(int id);
         Task<T> Get(Expression<Func<T, bool>> filter);
         Task<List<T>> GetAll(Expression<Func<T, bool>> filter = null);
     }

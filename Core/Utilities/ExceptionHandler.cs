@@ -8,17 +8,34 @@ namespace Core.Utilities
 {
     public static class ExceptionHandler
     {
-        public static IResult HandleException(Action action)
+        public static async Task<T> HandleExceptionWithData<T>(Func<Task<T>> method)
         {
-			try
-			{
-				action.Invoke();
-				return new SuccessResult();
-			}
-			catch (Exception ex)
-			{
-				throw ex;
-			}
+            try
+            {
+                var data = await method.Invoke();
+                if (data == null)
+                {
+                    throw new Exception("No data.");
+                }
+                return data;
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static async Task HandleException(Func<Task> method)
+        {
+            try
+            {
+                await method.Invoke();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }
