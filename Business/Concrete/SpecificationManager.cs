@@ -26,5 +26,10 @@ namespace Business.Concrete
         {
             return await ExceptionHandler.HandleExceptionWithData<IEnumerable<int>>(() => _specificationDal.AddMultiple(_mapper.Map<List<Specification>>(entities)));
         }
+
+        public async Task<List<SpecificationDto>> GetAll()
+        {
+            return await ExceptionHandler.HandleExceptionWithData<List<SpecificationDto>>(async () => _mapper.Map<List<SpecificationDto>>(await _specificationDal.GetAll()));
+        }
     }
 }

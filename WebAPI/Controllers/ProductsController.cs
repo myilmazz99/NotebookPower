@@ -75,5 +75,35 @@ namespace WebAPI.Controllers
 
 
         }
+    
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            return Ok(await _productService.GetAllWithIncludes());
+        }
+
+        [HttpGet("dailydeals")]
+        public async Task<IActionResult> GetDailyDeals()
+        {
+            return Ok(await _productService.GetDailyDeals());
+        }
+
+        [HttpGet("bestseller")]
+        public async Task<IActionResult> GetBestSeller()
+        {
+            return Ok(await _productService.GetBestSeller());
+        }
+
+        [HttpGet("similiar/{categoryId}")]
+        public async Task<IActionResult> GetSimiliar(int categoryId)
+        {
+            return Ok(await _productService.GetSimiliar(categoryId));
+        }
+
+        [HttpGet("specifications")]
+        public async Task<IActionResult> GetSpecifications()
+        {
+            return Ok(await _specificationService.GetAll());
+        }
     }
 }

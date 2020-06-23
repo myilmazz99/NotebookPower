@@ -15,6 +15,7 @@ namespace Entities.Dtos
         public double OldPrice { get; set; }
         public double NewPrice { get; set; }
         public int CategoryId { get; set; }
+        public string CategoryName { get; set; }
         public List<ProductImageDto> ProductImages { get; set; }
         public List<CommentDto> Comments { get; set; }
         public List<SpecificationDto> Specifications { get; set; }

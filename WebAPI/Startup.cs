@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -7,7 +8,9 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Business.Abstract;
 using Business.Concrete;
+using Business.Services;
 using Business.Utilities;
+using Business.Utilities.Nlog;
 using Core.Entities.Concrete;
 using Core.Security;
 using DataAccess.Abstract;
@@ -26,6 +29,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using NLog;
 using WebAPI.Extensions;
 
 namespace WebAPI
@@ -60,7 +64,18 @@ namespace WebAPI
             services.AddSingleton<ICartDal, EfCartDal<ShopContext>>();
             services.AddSingleton<ICartService, CartManager>();
 
+            services.AddSingleton<IFavoriteDal, EfFavoriteDal<ShopContext>>();
+
+            services.AddSingleton<ILoggerService, LoggerManager>();
+
             services.AddTransient<IAccountService, AccountManager>();
+            services.AddSingleton<JwtHelper>();
+
+            services.AddSingleton<IEmailSender, EmailSender>();
+
+            var emailConfiguration = Configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>();
+            services.AddSingleton(emailConfiguration);
+
             services.AddSingleton<JwtHelper>();
 
             var tokenOptions = Configuration.GetSection("TokenOptions").Get<JWTTokenOptions>();
@@ -93,14 +108,14 @@ namespace WebAPI
             services.AddControllers();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerService logger)
         {
             if (env.IsDevelopment())
             {
                 //app.UseDeveloperExceptionPage();
             }
 
-            app.ConfigureExceptionHandler();
+            app.ConfigureExceptionHandler(logger);
 
             app.UseCors("notebookpower");
 

@@ -9,5 +9,6 @@ namespace Business.Abstract
     public interface ISpecificationService
     {
         Task<IEnumerable<int>> Create(List<SpecificationDto> entities);
+        Task<List<SpecificationDto>> GetAll();
     }
 }

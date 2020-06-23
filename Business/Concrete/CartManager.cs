@@ -21,19 +21,24 @@ namespace Business.Concrete
             _mapper = mapper;
         }
 
-        public async Task Create(int userId)
+        public async Task Create(string userId)
         {
             await _cartDal.AddAsync(new Cart() { UserId= userId });
         }
 
-        public async Task<CartDto> Get(int id)
+        public async Task RemoveFromCart(RemoveFromCartDto dto)
         {
-            return _mapper.Map<CartDto>(await _cartDal.GetById(id));
+            await _cartDal.RemoveFromCart(dto);
         }
 
-        public async Task Update(CartDto entity)
+        public async Task<CartDto> Get(string userId)
         {
-            await _cartDal.UpdateAsync(_mapper.Map<Cart>(entity));
+            return _mapper.Map<CartDto>(await _cartDal.GetByUserId(userId));
+        }
+
+        public async Task<CartItemDto> Update(AddToCartDto dto)
+        {
+            return _mapper.Map<CartItemDto>(await _cartDal.Update(dto));
         }
     }
 }

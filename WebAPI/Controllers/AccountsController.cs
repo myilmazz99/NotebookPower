@@ -37,5 +37,39 @@ namespace WebAPI.Controllers
             var token = await _accountService.Login(dto);
             return Ok(token);
         }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(string id)
+        {
+            var data = await _accountService.GetUserCredentials(id);
+            return Ok(data);
+        }
+
+        [HttpGet("{id}/favorites")]
+        public async Task<IActionResult> GetFavorites(string id)
+        {
+            var favs = await _accountService.GetFavoriteProducts(id);
+            return Ok(favs);
+        }
+
+        [HttpGet("confirmemail")]
+        public async Task<IActionResult> ConfirmEmail([FromQuery]string userId, string token)
+        {
+            await _accountService.ConfirmEmail(userId, token);
+            return Ok("Mailiniz başarıyla onaylandı.");
+        }
+
+        [HttpPost("addtofav")]
+        public async Task<IActionResult> AddToFavorites(FavoriteDto dto)
+        {
+            return Ok(await _accountService.AddToFavorite(dto.UserId, dto.ProductId));
+        }
+
+        [HttpDelete("{userId}/removefromfav/{productId}")]
+        public async Task<IActionResult> RemoveFromFavorite(string userId, int productId)
+        {
+            await _accountService.RemoveFromFavorite(userId, productId);
+            return Ok("Favorilerden çıkarıldı.");
+        }
     }
 }

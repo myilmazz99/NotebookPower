@@ -7,8 +7,13 @@ namespace Entities
 {
     public class Cart : IEntity
     {
+        public Cart()
+        {
+            CartItems = new List<CartItem>();
+        }
+
         public int Id { get; set; }
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         public List<CartItem> CartItems { get; set; }
     }
 }

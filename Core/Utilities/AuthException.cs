@@ -10,5 +10,12 @@ namespace Core.Utilities
         {
 
         }
+
+        public AuthException(IEnumerable<string> messages)
+        {
+            Messages = messages;
+        }
+
+        public IEnumerable<string> Messages { get; set; }
     }
 }

@@ -27,7 +27,15 @@ namespace DataAccess.Concrete.EntityFrameworkCore
         {
             using (var context = new TContext())
             {
-                return await context.Set<Order>().Include(i => i.OrderItems).ToListAsync();
+                return await context.Set<Order>().Include(i => i.OrderItems).Include(i=>i.UserAddress).ToListAsync();
+            }
+        }
+
+        public async Task<List<Order>> GetPastOrders(string userId)
+        {
+            using (var context = new TContext())
+            {
+                return await context.Set<Order>().Include(i => i.OrderItems).Where(i => i.UserId == userId).ToListAsync();
             }
         }
     }

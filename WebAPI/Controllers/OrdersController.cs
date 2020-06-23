@@ -37,5 +37,11 @@ namespace WebAPI.Controllers
             await _orderService.Delete(id);
             return Ok();
         }
+
+        [HttpGet("{id}/orders")]
+        public async Task<IActionResult> GetPastOrders(string id)
+        {
+            return Ok(await _orderService.GetPastOrders(id));
+        }
     }
 }

@@ -21,23 +21,28 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> Create(int id)
+        public async Task<IActionResult> Create(string userId)
         {
-            await _cartService.Create(id);
+            await _cartService.Create(userId);
             return Ok();
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
+        [HttpGet("{userId}")]
+        public async Task<IActionResult> Get(string userId)
         {
-            await _cartService.Get(id);
-            return Ok();
+            return Ok(await _cartService.Get(userId));
         }
 
-        [HttpPost("update")]
-        public async Task<IActionResult> Update(CartDto cart)
+        [HttpPut]
+        public async Task<IActionResult> Update(AddToCartDto dto)
         {
-            await _cartService.Update(cart);
+            return Ok(await _cartService.Update(dto));
+        }
+
+        [HttpDelete("{cartId}/{cartItemId}")]
+        public async Task<IActionResult> Delete([FromRoute] RemoveFromCartDto dto)
+        {
+            await _cartService.RemoveFromCart(dto);
             return Ok();
         }
     }

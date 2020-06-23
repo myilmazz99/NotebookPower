@@ -36,12 +36,13 @@ namespace DataAccess.Concrete.EntityFrameworkCore
             }
         }
 
-        public async Task<List<Product>> Get10BestSeller()
+        public async Task<List<Product>> GetBestSeller()
         {
             using (var context = new TContext())
             {
                 return await context.Set<Product>()
-                    .OrderByDescending(i => i.OrderCount).Take(10)
+                    .OrderByDescending(i => i.OrderCount).Take(5)
+                    .Include(i=>i.Category)
                     .Include(i => i.Comments)
                     .Include(i => i.ProductImages)
                     .Include(i => i.ProductSpecifications)
@@ -50,12 +51,28 @@ namespace DataAccess.Concrete.EntityFrameworkCore
             }
         }
 
-        public async Task<List<Product>> Get10Latest()
+        public async Task<List<Product>> GetDailyDeals()
         {
             using (var context = new TContext())
             {
                 return await context.Set<Product>()
-                    .OrderByDescending(i => i.DateAdded).Take(10)
+                    .OrderByDescending(i => i.OldPrice - i.NewPrice).Take(5)
+                    .Include(i => i.Category)
+                    .Include(i => i.Comments)
+                    .Include(i => i.ProductImages)
+                    .Include(i => i.ProductSpecifications)
+                    .ThenInclude(i => i.Specification)
+                    .AsNoTracking().ToListAsync();
+            }
+        }
+
+        public async Task<List<Product>> GetSimiliar(int categoryId)
+        {
+            using (var context = new TContext())
+            {
+                return await context.Set<Product>()
+                    .Where(i=>i.CategoryId == categoryId).Take(5)
+                    .Include(i => i.Category)
                     .Include(i => i.Comments)
                     .Include(i => i.ProductImages)
                     .Include(i => i.ProductSpecifications)
@@ -74,6 +91,14 @@ namespace DataAccess.Concrete.EntityFrameworkCore
                     .Include(i => i.ProductSpecifications)
                     .ThenInclude(i => i.Specification)
                     .AsNoTracking().FirstOrDefaultAsync();
+            }
+        }
+
+        public async Task<List<Product>> GetAllWithIncludes()
+        {
+            using (var context = new TContext())
+            {
+                return await context.Set<Product>().Include(i => i.Category).Include(i => i.ProductImages).Include(i => i.ProductSpecifications).ThenInclude(i => i.Specification).ToListAsync();
             }
         }
     }

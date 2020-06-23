@@ -12,8 +12,10 @@ namespace DataAccess.Abstract
     {
         Task<int> Create(Product entity, IEnumerable<int> specIds);
         Task<Product> GetById(int id);
-        Task<List<Product>> Get10BestSeller();
-        Task<List<Product>> Get10Latest();
+        Task<List<Product>> GetBestSeller();
+        Task<List<Product>> GetDailyDeals();
         Task AddImages(List<ProductImage> images);
+        Task<List<Product>> GetAllWithIncludes();
+        Task<List<Product>> GetSimiliar(int categoryId);
     }
 }

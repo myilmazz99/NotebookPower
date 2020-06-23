@@ -43,5 +43,10 @@ namespace Business.Concrete
                 return _mapper.Map<OrderDto>(entity);
             });
         }
+
+        public async Task<List<OrderDto>> GetPastOrders(string userId)
+        {
+            return _mapper.Map<List<OrderDto>>(await _orderDal.GetPastOrders(userId));
+        }
     }
 }

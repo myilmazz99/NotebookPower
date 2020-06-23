@@ -11,5 +11,6 @@ namespace Business.Abstract
         Task<OrderDto> GetById(int orderId);
         Task<List<OrderDto>> GetAll();
         Task Delete(int orderId);
+        Task<List<OrderDto>> GetPastOrders(string userId);
     }
 }
