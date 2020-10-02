@@ -1,3 +1,0 @@
-2020-06-23 03:37:18.0213 ERROR Internal Error!!!
-2020-06-23 03:40:47.7722 ERROR Business.Utilities.Nlog.LoggerManager Internal Error!!!
-2020-06-23 17:16:30.2851 ERROR Business.Utilities.Nlog.LoggerManager An error occurred while updating the entries. See the inner exception for details.

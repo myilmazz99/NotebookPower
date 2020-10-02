@@ -12,5 +12,6 @@ namespace DataAccess.Abstract
         Task<Order> GetById(int id);
         Task<List<Order>> GetAll();
         Task<List<Order>> GetPastOrders(string userId);
+        Task<Order> ConfirmOrder(int orderId);
     }
 }

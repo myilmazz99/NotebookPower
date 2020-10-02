@@ -21,10 +21,10 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> Create(string userId)
+        public async Task<IActionResult> Create(UserDto dto)
         {
-            await _cartService.Create(userId);
-            return Ok();
+            var cart = await _cartService.Create(dto.UserId);
+            return Ok(cart);
         }
 
         [HttpGet("{userId}")]

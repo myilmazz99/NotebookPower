@@ -23,24 +23,20 @@ namespace Business.Concrete
         private readonly IMapper _mapper;
         private readonly JwtHelper _jwtHelper;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IFavoriteDal _favoriteDal;
         private readonly IEmailSender _emailSender;
 
-        public AccountManager(IMapper mapper, JwtHelper jwtHelper, SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, IFavoriteDal favoriteDal, IEmailSender emailSender)
+        public AccountManager(IMapper mapper, JwtHelper jwtHelper, UserManager<ApplicationUser> userManager, IFavoriteDal favoriteDal, IEmailSender emailSender)
         {
             _mapper = mapper;
             _jwtHelper = jwtHelper;
             _userManager = userManager;
             _favoriteDal = favoriteDal;
             _emailSender = emailSender;
-            _signInManager = signInManager;
         }
 
-        public async Task<AccessToken> Login(UserDto user)
+        public async Task<AccessToken> Login(LoginDto user)
         {
-            Validator.Validate(user, new UserValidation());
-
             var IsUserValid = await _userManager.FindByEmailAsync(user.Email);
             if (IsUserValid == null) throw new AuthException("Kullanıcı bulunamadı.");
             if (!IsUserValid.EmailConfirmed) throw new AuthException("Lütfen mailinizi onaylayınız.");
@@ -51,25 +47,27 @@ namespace Business.Concrete
             return _jwtHelper.CreateToken(_mapper.Map<ApplicationUser>(IsUserValid));
         }
 
-        public async Task Register(UserDto user)
+        public async Task<AccessToken> Register(UserDto user)
         {
             Validator.Validate(user, new UserValidation());
             var map = _mapper.Map<ApplicationUser>(user);
             map.UserName = map.Email;
+            map.RoleName = "user";
             var result = await _userManager.CreateAsync(map, user.Password);
             if (result.Succeeded)
             {
                 var newUser = await _userManager.FindByEmailAsync(user.Email);
-                var token = await _userManager.GenerateEmailConfirmationTokenAsync(newUser);
-                token = System.Web.HttpUtility.UrlEncode(token);
-                var url = $"http://localhost:61361/api/accounts/confirmemail?userId={newUser.Id}&token={token}";
+                //var token = await _userManager.GenerateEmailConfirmationTokenAsync(newUser);
+                //token = System.Web.HttpUtility.UrlEncode(token);
+                //var url = $"http://localhost:61361/api/accounts/confirmemail?userId={newUser.Id}&token={token}";
 
-                var message = new Message
-                    (new string[] { user.Email },
-                    "Notebook Power - Email doğrulama maili",
-                    $"Üyeliğinizi oluşturmamıza son bir adım kaldı. Lütfen aşağıdaki linke tıklayarak mailinizi onaylayınız. <a href='{url}'>Emaili onayla</a>");
+                //var message = new Message
+                //    (new string[] { user.Email },
+                //    "Notebook Power - Email doğrulama maili",
+                //    $"Üyeliğinizi oluşturmamıza son bir adım kaldı. Lütfen aşağıdaki linke tıklayarak mailinizi onaylayınız. <a href='{url}'>Emaili onayla</a>");
 
-                await _emailSender.SendEmailAsync(message);
+                //await _emailSender.SendEmailAsync(message);
+                return _jwtHelper.CreateToken(_mapper.Map<ApplicationUser>(newUser));
             }
             else
             {
@@ -80,6 +78,7 @@ namespace Business.Concrete
         public async Task<UserDto> GetUserCredentials(string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
+            if (user == null) throw new AuthException("Kullanıcı bulunamadı.");
             return _mapper.Map<UserDto>(user);
         }
 

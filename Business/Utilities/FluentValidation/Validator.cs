@@ -1,6 +1,8 @@
 ﻿using FluentValidation;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Business.Utilities.FluentValidation
@@ -13,7 +15,8 @@ namespace Business.Utilities.FluentValidation
 
             if (!validation.IsValid)
             {
-                throw new ValidationException(validation.Errors);
+                var deneme = validation.Errors;
+                throw new ValidationException(JsonConvert.SerializeObject(deneme.Select(i => new { i.PropertyName, i.ErrorMessage})));
             }
         }
     }

@@ -42,10 +42,24 @@ namespace WebAPI.Controllers
             return Ok(await _productService.Add(productDto, specIds));
         }
 
+        [HttpPut]
+        public async Task<IActionResult> Update([FromBody] ProductDto productDto)
+        {
+            var specIds = await _specificationService.Create(productDto.Specifications);
+            return Ok(await _productService.Update(productDto, specIds));
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(string id)
+        {
+            await _productService.Delete(int.Parse(id));
+            return NoContent();
+        }
+
         [HttpPost("addImages")]
         public async Task<IActionResult> AddImages([FromForm] List<IFormFile> productImages, [FromForm] int productId)
         {
-            if (productImages == null) throw new Exception("Fotoğraflar boş!");
+            if (productImages.Count == 0) return NoContent();
 
             var images = new List<ProductImageDto>();
 
@@ -68,9 +82,9 @@ namespace WebAPI.Controllers
 
                 return Ok();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return BadRequest("Fotoğraflar yüklenirken bir hata oluştu.");
+                throw ex;
             }
 
 
@@ -104,6 +118,13 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> GetSpecifications()
         {
             return Ok(await _specificationService.GetAll());
+        }
+
+        [HttpDelete("{productId}/{specId}")]
+        public async Task<IActionResult> RemoveSpecification(string productId, string specId)
+        {
+            await _specificationService.RemoveSpecification(int.Parse(productId), int.Parse(specId));
+            return Ok(int.Parse(specId));
         }
     }
 }

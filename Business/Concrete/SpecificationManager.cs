@@ -24,12 +24,17 @@ namespace Business.Concrete
 
         public async Task<IEnumerable<int>> Create(List<SpecificationDto> entities)
         {
-            return await ExceptionHandler.HandleExceptionWithData<IEnumerable<int>>(() => _specificationDal.AddMultiple(_mapper.Map<List<Specification>>(entities)));
+            return await _specificationDal.AddOrUpdateMultiple(_mapper.Map<List<Specification>>(entities));
         }
 
         public async Task<List<SpecificationDto>> GetAll()
         {
-            return await ExceptionHandler.HandleExceptionWithData<List<SpecificationDto>>(async () => _mapper.Map<List<SpecificationDto>>(await _specificationDal.GetAll()));
+            return _mapper.Map<List<SpecificationDto>>(await _specificationDal.GetAll());
+        }
+
+        public async Task RemoveSpecification(int productId, int specId)
+        {
+            await _specificationDal.RemoveSpecification(productId, specId);
         }
     }
 }

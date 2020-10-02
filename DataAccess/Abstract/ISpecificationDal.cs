@@ -9,6 +9,7 @@ namespace DataAccess.Abstract
 {
     public interface ISpecificationDal : IEntityRepository<Specification>
     {
-        Task<IEnumerable<int>> AddMultiple(List<Specification> entities);
+        Task<IEnumerable<int>> AddOrUpdateMultiple(List<Specification> entities);
+        Task RemoveSpecification(int productId, int specId);
     }
 }

@@ -27,7 +27,7 @@ namespace DataAccess.Concrete.EntityFrameworkCore
         {
             using (var context = new TContext())
             {
-                return await context.Set<Order>().Include(i => i.OrderItems).Include(i=>i.UserAddress).ToListAsync();
+                return await context.Set<Order>().Include(i => i.OrderItems).ToListAsync();
             }
         }
 
@@ -36,6 +36,23 @@ namespace DataAccess.Concrete.EntityFrameworkCore
             using (var context = new TContext())
             {
                 return await context.Set<Order>().Include(i => i.OrderItems).Where(i => i.UserId == userId).ToListAsync();
+            }
+        }
+
+        public async Task<Order> ConfirmOrder(int orderId)
+        {
+            using (var context = new TContext())
+            {
+                var order = context.Set<Order>().Find(orderId);
+                if(order != null)
+                {
+                    order.Status = OrderStatus.Kargoda;
+                    await context.SaveChangesAsync();
+
+                    return order;
+                }
+
+                throw new Exception();
             }
         }
     }

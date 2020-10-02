@@ -20,7 +20,7 @@ namespace Business.Concrete
          
         public async Task<List<Category>> GetAll()
         {
-            return await ExceptionHandler.HandleExceptionWithData<List<Category>>(() => _categoryDal.GetAll());
+            return await _categoryDal.GetAll();
         }
     }
 }

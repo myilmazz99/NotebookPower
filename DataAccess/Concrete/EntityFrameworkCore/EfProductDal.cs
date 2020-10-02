@@ -42,7 +42,7 @@ namespace DataAccess.Concrete.EntityFrameworkCore
             {
                 return await context.Set<Product>()
                     .OrderByDescending(i => i.OrderCount).Take(5)
-                    .Include(i=>i.Category)
+                    .Include(i => i.Category)
                     .Include(i => i.Comments)
                     .Include(i => i.ProductImages)
                     .Include(i => i.ProductSpecifications)
@@ -71,7 +71,7 @@ namespace DataAccess.Concrete.EntityFrameworkCore
             using (var context = new TContext())
             {
                 return await context.Set<Product>()
-                    .Where(i=>i.CategoryId == categoryId).Take(5)
+                    .Where(i => i.CategoryId == categoryId).Take(5)
                     .Include(i => i.Category)
                     .Include(i => i.Comments)
                     .Include(i => i.ProductImages)
@@ -90,6 +90,7 @@ namespace DataAccess.Concrete.EntityFrameworkCore
                     .Include(i => i.ProductImages)
                     .Include(i => i.ProductSpecifications)
                     .ThenInclude(i => i.Specification)
+                    .Include(i => i.Comments)
                     .AsNoTracking().FirstOrDefaultAsync();
             }
         }
@@ -98,7 +99,38 @@ namespace DataAccess.Concrete.EntityFrameworkCore
         {
             using (var context = new TContext())
             {
-                return await context.Set<Product>().Include(i => i.Category).Include(i => i.ProductImages).Include(i => i.ProductSpecifications).ThenInclude(i => i.Specification).ToListAsync();
+                return await context.Set<Product>().Include(i => i.Category)
+                    .Include(i => i.ProductImages)
+                    .Include(i => i.ProductSpecifications)
+                    .ThenInclude(i => i.Specification)
+                    .Include(i=>i.Comments).ToListAsync();
+            }
+        }
+
+        public async Task Update(Product product, IEnumerable<int> specIds)
+        {
+            using (var context = new TContext())
+            {
+                var entity = await context.Set<Product>().Include(i => i.ProductSpecifications).FirstOrDefaultAsync(i => i.Id == product.Id);
+
+                if (entity != null)
+                {
+                    foreach (var id in specIds)
+                    {
+                        if (entity.ProductSpecifications.Find(i => i.ProductId == product.Id && i.SpecificationId == id) == null)
+                            entity.ProductSpecifications.Add(new ProductSpecification { ProductId = product.Id, SpecificationId = id });
+                    }
+
+                    entity.CategoryId = product.CategoryId;
+                    entity.NewPrice = product.NewPrice;
+                    entity.OldPrice = product.OldPrice;
+                    entity.ProductDescription = product.ProductDescription;
+                    entity.ProductName = product.ProductName;
+                    entity.Stock = product.Stock;
+
+                    await context.SaveChangesAsync();
+                }
+
             }
         }
     }

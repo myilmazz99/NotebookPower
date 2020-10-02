@@ -6,7 +6,10 @@ using AutoMapper;
 using Business.Concrete;
 using Core.Entities.Concrete;
 using Core.Security;
+using Core.Security.Constants;
 using Entities.Dtos;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -15,6 +18,7 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Policy = PolicyConstants.USER)]
     public class AccountsController : ControllerBase
     {
         private readonly IAccountService _accountService;
@@ -25,14 +29,16 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register(UserDto user)
+        [AllowAnonymous]
+        public async Task<IActionResult> Register(UserDto dto)
         {
-            await _accountService.Register(user);
-            return Ok("Kullanıcı oluşturuldu.");
+            var token = await _accountService.Register(dto);
+            return Ok(token);
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] UserDto dto)
+        [AllowAnonymous]
+        public async Task<IActionResult> Login([FromBody] LoginDto dto)
         {
             var token = await _accountService.Login(dto);
             return Ok(token);

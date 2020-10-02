@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Business.Abstract;
+using Entities.Dtos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -25,6 +26,13 @@ namespace WebAPI.Controllers
             return Ok(await _orderService.GetAll());
         }
 
+        [HttpPost]
+        public async Task<IActionResult> FulfillOrder(OrderDto dto)
+        {
+            await _orderService.FulfillOrder(dto);
+            return NoContent();
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
@@ -42,6 +50,12 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> GetPastOrders(string id)
         {
             return Ok(await _orderService.GetPastOrders(id));
+        }
+
+        [HttpPut("{orderId}")]
+        public async Task<IActionResult> ConfirmOrder(int orderId)
+        {
+            return Ok(await _orderService.ConfirmOrder(orderId));
         }
     }
 }

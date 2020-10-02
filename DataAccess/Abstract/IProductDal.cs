@@ -17,5 +17,6 @@ namespace DataAccess.Abstract
         Task AddImages(List<ProductImage> images);
         Task<List<Product>> GetAllWithIncludes();
         Task<List<Product>> GetSimiliar(int categoryId);
+        Task Update(Product product, IEnumerable<int> specIds);
     }
 }

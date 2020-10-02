@@ -10,7 +10,7 @@ namespace Business.Abstract
     public interface ICartService
     {
         Task<CartDto> Get(string userId);
-        Task Create(string userId);
+        Task<CartDto> Create(string userId);
         Task<CartItemDto> Update(AddToCartDto dto);
         Task RemoveFromCart(RemoveFromCartDto dto);
     }

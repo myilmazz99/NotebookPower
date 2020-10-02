@@ -1,4 +1,5 @@
 ﻿using Core.Entities.Concrete;
+using IdentityModel;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
@@ -52,7 +53,7 @@ namespace Core.Security
             {
                 new Claim("userId", user.Id),
                 new Claim(System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames.Email, user.Email),
-                new Claim("role", user.RoleName),
+                new Claim(JwtClaimTypes.Role, user.RoleName),
                 new Claim("fullname", user.FullName)
             };
         }

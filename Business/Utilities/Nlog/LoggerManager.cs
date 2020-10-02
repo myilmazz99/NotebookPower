@@ -28,7 +28,7 @@ namespace Business.Utilities.Nlog
 
         public void LogInfo(string message)
         {
-            logger.Error(message);
+            logger.Info(message);
         }
 
         public void LogWarn(Exception ex, string message)

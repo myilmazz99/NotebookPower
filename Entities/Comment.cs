@@ -10,7 +10,8 @@ namespace Entities
         public int Id { get; set; }
         public string CommentText { get; set; }
         public byte Rating { get; set; }
-        public int UserId { get; set; }
+        public string UserId { get; set; }
+        public string Username { get; set; }
         public int ProductId { get; set; }
         public Product Product { get; set; }
     }

@@ -11,8 +11,8 @@ namespace Business.Concrete
     {
         Task<UserDto> GetUserCredentials(string userId);
         Task<List<FavoriteDto>> GetFavoriteProducts(string userId);
-        Task<AccessToken> Login(UserDto user);
-        Task Register(UserDto user);
+        Task<AccessToken> Login(LoginDto user);
+        Task<AccessToken> Register(UserDto user);
         Task ConfirmEmail(string id, string token);
         Task<FavoriteDto> AddToFavorite(string userId, int productId);
         Task RemoveFromFavorite(string userId, int productId);

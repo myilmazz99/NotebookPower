@@ -27,9 +27,19 @@ namespace DataAccess.Concrete.EntityFrameworkCore
         {
             using (var context = new TContext())
             {
-                var cartToUpdate = await context.Set<Cart>().FirstOrDefaultAsync(i => i.Id == dto.Id);
-                var cartItem = new CartItem { ProductId = dto.ProductId, ProductQuantity = dto.Quantity };
-                cartToUpdate.CartItems.Add(cartItem);
+                CartItem cartItem;
+                var cartToUpdate = await context.Set<Cart>().Include(i=>i.CartItems).FirstOrDefaultAsync(i => i.Id == dto.Id);
+                if (dto.ProductExists)
+                {
+                    cartItem = cartToUpdate.CartItems.Find(i => i.ProductId == dto.ProductId);
+                    cartItem.ProductQuantity += dto.Quantity;
+                }
+                else
+                {
+                    cartItem = new CartItem { ProductId = dto.ProductId, ProductQuantity = dto.Quantity };
+                    cartToUpdate.CartItems.Add(cartItem);
+                }
+
                 await context.SaveChangesAsync();
                 return await context.Set<CartItem>().Include(i=>i.Product).FirstOrDefaultAsync(i=>i.Id == cartItem.Id);
             }

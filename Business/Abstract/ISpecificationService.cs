@@ -10,5 +10,6 @@ namespace Business.Abstract
     {
         Task<IEnumerable<int>> Create(List<SpecificationDto> entities);
         Task<List<SpecificationDto>> GetAll();
+        Task RemoveSpecification(int productId, int specId);
     }
 }

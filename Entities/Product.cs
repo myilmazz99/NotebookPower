@@ -10,6 +10,7 @@ namespace Entities
         public Product()
         {
             DateAdded = DateTime.Now;
+            ProductSpecifications = new List<ProductSpecification>();
         }
 
         public int Id { get; set; }

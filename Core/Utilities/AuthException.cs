@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -10,12 +11,9 @@ namespace Core.Utilities
         {
 
         }
-
-        public AuthException(IEnumerable<string> messages)
+        public AuthException(IEnumerable<string> message) : base(JsonConvert.SerializeObject(message))
         {
-            Messages = messages;
-        }
 
-        public IEnumerable<string> Messages { get; set; }
+        }
     }
 }

@@ -21,9 +21,10 @@ namespace Business.Concrete
             _mapper = mapper;
         }
 
-        public async Task Create(string userId)
+        public async Task<CartDto> Create(string userId)
         {
             await _cartDal.AddAsync(new Cart() { UserId= userId });
+            return _mapper.Map<CartDto>(await _cartDal.GetByUserId(userId));
         }
 
         public async Task RemoveFromCart(RemoveFromCartDto dto)

@@ -1,4 +1,5 @@
-﻿using MailKit.Net.Smtp;
+﻿using Business.Utilities.Nlog;
+using MailKit.Net.Smtp;
 using MimeKit;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ namespace Business.Services
     {
         private readonly EmailConfiguration _emailConfig;
 
-        public EmailSender(EmailConfiguration emailConfig)
+        public EmailSender(EmailConfiguration emailConfig, ILoggerService loggerService)
         {
             _emailConfig = emailConfig;
         }
@@ -47,7 +48,6 @@ namespace Business.Services
                 }
                 catch
                 {
-                    //log an error message or throw an exception or both.
                     throw;
                 }
                 finally
