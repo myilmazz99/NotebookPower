@@ -1,24 +1,14 @@
 ﻿using Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace DataAccess.Concrete.Contexts
 {
     public class ShopContext : DbContext
     {
-        private readonly IConfiguration _configuration;
-
-        public ShopContext(IConfiguration configuration)
-        {
-            _configuration = configuration;
-        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(_configuration.GetSection("ConnectionString").Value);
+            optionsBuilder.UseSqlServer(@"Server=tcp:notebookpower.database.windows.net,1433;Initial Catalog=notebookpower;Persist Security Info=False;User ID=admin_notebookpower;Password=Notmusti230395;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

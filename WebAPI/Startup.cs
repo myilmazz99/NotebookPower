@@ -50,7 +50,7 @@ namespace WebAPI
             var tokenOptions = Configuration.GetSection("TokenOptions").Get<JWTTokenOptions>();
             services.ConfigureJwt(tokenOptions);
 
-            services.AddDbContext<ShopIdentityContext>(opt => opt.UseSqlServer(Configuration.GetSection("ConnectionString").Value));
+            services.AddDbContext<ShopIdentityContext>(opt => opt.UseSqlServer(@"Server=tcp:notebookpower.database.windows.net,1433;Initial Catalog=notebookpower;Persist Security Info=False;User ID=admin_notebookpower;Password=Notmusti230395;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"));
             services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ShopIdentityContext>().AddDefaultTokenProviders();
 
             services.Configure<IdentityOptions>(opt =>
