@@ -24,6 +24,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("email")]
+        [AllowAnonymous]
         public async Task<IActionResult> AddEmail(EmailListDto email)
         {
             await _adminService.AddEmail(email);

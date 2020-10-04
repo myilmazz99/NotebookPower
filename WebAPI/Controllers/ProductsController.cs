@@ -1,15 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using Business.Abstract;
-using Core.Utilities;
-using DataAccess.Concrete.EntityFrameworkCore;
 using Entities.Dtos;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
@@ -68,7 +63,7 @@ namespace WebAPI.Controllers
                 foreach (var file in productImages)
                 {
                     var uniqueFileName = Guid.NewGuid().ToString() + "_" + file.FileName;
-                    var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads", uniqueFileName);
+                    var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", uniqueFileName);
 
                     using (var stream = new FileStream(path, FileMode.Create))
                     {
@@ -89,7 +84,7 @@ namespace WebAPI.Controllers
 
 
         }
-    
+
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -99,6 +94,8 @@ namespace WebAPI.Controllers
         [HttpGet("dailydeals")]
         public async Task<IActionResult> GetDailyDeals()
         {
+            var deneme = HttpContext.User;
+            var deneme2 = User;
             return Ok(await _productService.GetDailyDeals());
         }
 

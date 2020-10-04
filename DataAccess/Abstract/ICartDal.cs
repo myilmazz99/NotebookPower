@@ -13,5 +13,6 @@ namespace DataAccess.Abstract
         Task<Cart> GetByUserId(string userId);
         Task<CartItem> Update(AddToCartDto dto);
         Task RemoveFromCart(RemoveFromCartDto dto);
+        Task Empty(int id);
     }
 }

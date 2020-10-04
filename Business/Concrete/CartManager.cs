@@ -23,7 +23,7 @@ namespace Business.Concrete
 
         public async Task<CartDto> Create(string userId)
         {
-            await _cartDal.AddAsync(new Cart() { UserId= userId });
+            await _cartDal.AddAsync(new Cart() { UserId = userId });
             return _mapper.Map<CartDto>(await _cartDal.GetByUserId(userId));
         }
 
@@ -40,6 +40,11 @@ namespace Business.Concrete
         public async Task<CartItemDto> Update(AddToCartDto dto)
         {
             return _mapper.Map<CartItemDto>(await _cartDal.Update(dto));
+        }
+
+        public async Task Empty(int id)
+        {
+            await _cartDal.Empty(id);
         }
     }
 }

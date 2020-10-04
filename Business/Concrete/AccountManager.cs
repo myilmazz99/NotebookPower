@@ -57,21 +57,11 @@ namespace Business.Concrete
             if (result.Succeeded)
             {
                 var newUser = await _userManager.FindByEmailAsync(user.Email);
-                //var token = await _userManager.GenerateEmailConfirmationTokenAsync(newUser);
-                //token = System.Web.HttpUtility.UrlEncode(token);
-                //var url = $"http://localhost:61361/api/accounts/confirmemail?userId={newUser.Id}&token={token}";
-
-                //var message = new Message
-                //    (new string[] { user.Email },
-                //    "Notebook Power - Email doğrulama maili",
-                //    $"Üyeliğinizi oluşturmamıza son bir adım kaldı. Lütfen aşağıdaki linke tıklayarak mailinizi onaylayınız. <a href='{url}'>Emaili onayla</a>");
-
-                //await _emailSender.SendEmailAsync(message);
                 return _jwtHelper.CreateToken(_mapper.Map<ApplicationUser>(newUser));
             }
             else
             {
-                throw new AuthException(result.Errors.Select(i=>i.Description));
+                throw new AuthException(result.Errors.Select(i => i.Description));
             }
         }
 

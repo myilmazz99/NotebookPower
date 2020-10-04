@@ -19,7 +19,7 @@ namespace DataAccess.Concrete.EntityFrameworkCore
         {
             using (var context = new TContext())
             {
-                return await context.Set<Cart>().Include(i=>i.CartItems).ThenInclude(i=>i.Product).FirstOrDefaultAsync(i => i.UserId == userId);
+                return await context.Set<Cart>().Include(i => i.CartItems).ThenInclude(i => i.Product).FirstOrDefaultAsync(i => i.UserId == userId);
             }
         }
 
@@ -28,7 +28,7 @@ namespace DataAccess.Concrete.EntityFrameworkCore
             using (var context = new TContext())
             {
                 CartItem cartItem;
-                var cartToUpdate = await context.Set<Cart>().Include(i=>i.CartItems).FirstOrDefaultAsync(i => i.Id == dto.Id);
+                var cartToUpdate = await context.Set<Cart>().Include(i => i.CartItems).FirstOrDefaultAsync(i => i.Id == dto.Id);
                 if (dto.ProductExists)
                 {
                     cartItem = cartToUpdate.CartItems.Find(i => i.ProductId == dto.ProductId);
@@ -41,7 +41,7 @@ namespace DataAccess.Concrete.EntityFrameworkCore
                 }
 
                 await context.SaveChangesAsync();
-                return await context.Set<CartItem>().Include(i=>i.Product).FirstOrDefaultAsync(i=>i.Id == cartItem.Id);
+                return await context.Set<CartItem>().Include(i => i.Product).FirstOrDefaultAsync(i => i.Id == cartItem.Id);
             }
         }
 
@@ -49,10 +49,18 @@ namespace DataAccess.Concrete.EntityFrameworkCore
         {
             using (var context = new TContext())
             {
-                var cartToRemoveFrom = await context.Set<Cart>().Include(i=>i.CartItems).FirstOrDefaultAsync(i => i.Id == dto.CartId);
+                var cartToRemoveFrom = await context.Set<Cart>().Include(i => i.CartItems).FirstOrDefaultAsync(i => i.Id == dto.CartId);
                 cartToRemoveFrom.CartItems = cartToRemoveFrom.CartItems.Where(i => i.Id != dto.CartItemId).ToList();
                 await context.SaveChangesAsync();
             }
+        }
+
+        public async Task Empty(int id)
+        {
+            using var context = new TContext();
+            var cart = await context.Set<Cart>().Include(i => i.CartItems).FirstAsync(i => i.Id == id);
+            cart.CartItems = new List<CartItem>();
+            await context.SaveChangesAsync();
         }
     }
 }

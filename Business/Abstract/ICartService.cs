@@ -13,5 +13,6 @@ namespace Business.Abstract
         Task<CartDto> Create(string userId);
         Task<CartItemDto> Update(AddToCartDto dto);
         Task RemoveFromCart(RemoveFromCartDto dto);
+        Task Empty(int id);
     }
 }

@@ -43,7 +43,14 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> Delete([FromRoute] RemoveFromCartDto dto)
         {
             await _cartService.RemoveFromCart(dto);
-            return Ok();
+            return NoContent();
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Clear(int id)
+        {
+            await _cartService.Empty(id);
+            return NoContent();
         }
     }
 }

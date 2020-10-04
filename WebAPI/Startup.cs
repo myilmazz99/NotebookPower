@@ -25,6 +25,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using WebAPI.Extensions;
+using WebAPI.Seeds;
 
 namespace WebAPI
 {
@@ -78,12 +79,14 @@ namespace WebAPI
             services.AddControllers();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerService logger)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerService logger, UserManager<ApplicationUser> userManager)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseHttpsRedirection();
 
             app.ConfigureExceptionHandler(logger);
 
@@ -98,6 +101,8 @@ namespace WebAPI
             {
                 endpoints.MapControllers();
             });
+
+            IdentitySeed.Seed(userManager).Wait();
         }
     }
 }
