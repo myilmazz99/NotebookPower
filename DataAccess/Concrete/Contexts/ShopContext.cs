@@ -1,5 +1,6 @@
 ﻿using Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,9 +9,16 @@ namespace DataAccess.Concrete.Contexts
 {
     public class ShopContext : DbContext
     {
+        private readonly IConfiguration _configuration;
+
+        public ShopContext(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server=(localdb)\MSSQLLocalDB; Database=NotebookPowerDB; integrated security=true");
+            optionsBuilder.UseSqlServer(_configuration.GetSection("ConnectionString").Value);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
