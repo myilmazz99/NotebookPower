@@ -90,9 +90,9 @@ namespace WebAPI
 
             app.ConfigureExceptionHandler(logger);
 
-            app.UseCorsConfig();
-
             app.UseRouting();
+
+            app.UseCorsConfig();
 
             app.UseAuthentication();
             app.UseAuthorization();
