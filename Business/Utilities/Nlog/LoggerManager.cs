@@ -13,7 +13,7 @@ namespace Business.Utilities.Nlog
 
         public LoggerManager()
         {
-            LogManager.LoadConfiguration("C:/Users/Mustafa/source/repos/NotebookPower/Business/Utilities/Nlog/nlog.config");
+            LogManager.LoadConfiguration(Environment.CurrentDirectory + "\\nlog.config");
         }
 
         public void LogError(Exception ex, string message)
