@@ -7,7 +7,7 @@ namespace WebAPI.Extensions
     {
         public static void AddCorsConfig(this IServiceCollection services)
         {
-            services.AddCors(i => i.AddPolicy("notebookpower", conf => conf.WithOrigins("https://wonderful-dune-027900103.azurestaticapps.net/").AllowAnyMethod().AllowAnyHeader()));
+            services.AddCors(i => i.AddPolicy("notebookpower", conf => conf.WithOrigins("https://wonderful-dune-027900103.azurestaticapps.net").AllowAnyMethod().AllowAnyHeader()));
         }
 
         public static void UseCorsConfig(this IApplicationBuilder app)
