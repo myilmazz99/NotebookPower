@@ -42,7 +42,7 @@ namespace WebAPI
         {
             services.AddAutoMapper(typeof(MappingProfile));
 
-            services.AddCorsConfig();
+            services.AddCors();
 
             var emailConfiguration = Configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>();
             services.AddSingleton(emailConfiguration);
@@ -92,7 +92,7 @@ namespace WebAPI
 
             app.UseRouting();
 
-            app.UseCorsConfig();
+            app.UseCors(conf => conf.SetIsOriginAllowed(x => _ = true).AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().AllowCredentials());
 
             app.UseAuthentication();
             app.UseAuthorization();
