@@ -67,7 +67,7 @@ namespace WebAPI.Controllers
 
                     using (var stream = new FileStream(path, FileMode.Create))
                     {
-                        await stream.CopyToAsync(stream);
+                        await file.CopyToAsync(stream);
                     }
 
                     images.Add(new ProductImageDto { FileName = uniqueFileName, ImageUrl = path, ProductId = productId });
