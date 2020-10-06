@@ -10,7 +10,6 @@ namespace Entities.Dtos
         public int Id { get; set; }
         public int ProductId { get; set; }
         public ProductDto Product { get; set; }
-        public string ProductImage { get; set; }
         public string UserId { get; set; }
     }
 }

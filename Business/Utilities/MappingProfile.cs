@@ -48,7 +48,7 @@ namespace Business.Utilities
             CreateMap<ApplicationUser, UserDto>();
             CreateMap<UserDto, ApplicationUser>();
 
-            CreateMap<Favorite, FavoriteDto>().ForMember(i => i.ProductImage, j => j.MapFrom(k => k.Product.ProductImages[0].ImageUrl));
+            CreateMap<Favorite, FavoriteDto>();
             CreateMap<FavoriteDto, Favorite>();
         }
     }
