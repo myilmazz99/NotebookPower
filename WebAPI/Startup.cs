@@ -89,6 +89,7 @@ namespace WebAPI
             app.UseHttpsRedirection();
 
             app.ConfigureExceptionHandler(logger);
+            app.UseStaticFiles();
 
             app.UseRouting();
 
