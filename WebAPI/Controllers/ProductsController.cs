@@ -64,13 +64,14 @@ namespace WebAPI.Controllers
                 {
                     var uniqueFileName = Guid.NewGuid().ToString() + "_" + file.FileName;
                     var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", uniqueFileName);
+                    var publicPath = Path.Combine(Path.DirectorySeparatorChar.ToString(), "uploads", uniqueFileName);
 
                     using (var stream = new FileStream(path, FileMode.Create))
                     {
                         await file.CopyToAsync(stream);
                     }
 
-                    images.Add(new ProductImageDto { FileName = uniqueFileName, ImageUrl = path, ProductId = productId });
+                    images.Add(new ProductImageDto { FileName = uniqueFileName, ImageUrl = publicPath, ProductId = productId });
                 }
 
                 await _productService.AddImages(images);
