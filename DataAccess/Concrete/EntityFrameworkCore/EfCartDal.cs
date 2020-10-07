@@ -19,7 +19,7 @@ namespace DataAccess.Concrete.EntityFrameworkCore
         {
             using (var context = new TContext())
             {
-                return await context.Set<Cart>().Include(i => i.CartItems).ThenInclude(i => i.Product).FirstOrDefaultAsync(i => i.UserId == userId);
+                return await context.Set<Cart>().Include(i => i.CartItems).ThenInclude(i => i.Product).ThenInclude(i => i.ProductImages).FirstOrDefaultAsync(i => i.UserId == userId);
             }
         }
 
