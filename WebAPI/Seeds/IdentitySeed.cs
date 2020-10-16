@@ -8,14 +8,14 @@ namespace WebAPI.Seeds
     {
         public static async Task Seed(UserManager<ApplicationUser> userManager)
         {
-            var user = await userManager.FindByNameAsync("admin");
+            var user = await userManager.FindByNameAsync("admin@notebookpower.com");
 
             if (user == null)
             {
                 ApplicationUser newUser = new ApplicationUser
                 {
-                    UserName = "mfyilmaz95@gmail.com",
-                    Email = "mfyilmaz95@gmail.com",
+                    UserName = "admin@notebookpower.com",
+                    Email = "admin@notebookpower.com",
                     EmailConfirmed = true,
                     FullName = "Admin",
                     RoleName = "admin"
