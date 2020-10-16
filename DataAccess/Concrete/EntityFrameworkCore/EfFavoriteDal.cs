@@ -22,7 +22,7 @@ namespace DataAccess.Concrete.EntityFrameworkCore
                 var fav = new Favorite { ProductId = productId, UserId = userId };
                 await context.Set<Favorite>().AddAsync(fav);
                 await context.SaveChangesAsync();
-                return await context.Set<Favorite>().Include(i => i.Product).FirstOrDefaultAsync(i => i.Id == fav.Id);
+                return await context.Set<Favorite>().Include(i => i.Product).ThenInclude(i => i.ProductImages).FirstOrDefaultAsync(i => i.Id == fav.Id);
 
             }
         }
@@ -31,7 +31,7 @@ namespace DataAccess.Concrete.EntityFrameworkCore
         {
             using (var context = new TContext())
             {
-                return await context.Set<Favorite>().Where(filter).Include(i=>i.Product).ThenInclude(i=>i.ProductImages).ToListAsync();
+                return await context.Set<Favorite>().Where(filter).Include(i => i.Product).ThenInclude(i => i.ProductImages).ToListAsync();
             }
         }
     }

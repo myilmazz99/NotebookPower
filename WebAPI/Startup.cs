@@ -50,7 +50,7 @@ namespace WebAPI
             var tokenOptions = Configuration.GetSection("TokenOptions").Get<JWTTokenOptions>();
             services.ConfigureJwt(tokenOptions);
 
-            services.AddDbContext<ShopIdentityContext>(opt => opt.UseSqlServer(@"Server=tcp:notebookpower.database.windows.net,1433;Initial Catalog=notebookpower;Persist Security Info=False;User ID=admin_notebookpower;Password=Notmusti230395;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"));
+            services.AddDbContext<ShopIdentityContext>(opt => opt.UseSqlServer(Configuration.GetSection("ConnectionString").Value));
             services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ShopIdentityContext>().AddDefaultTokenProviders();
 
             services.Configure<IdentityOptions>(opt =>
@@ -79,7 +79,7 @@ namespace WebAPI
             services.AddControllers();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerService logger, UserManager<ApplicationUser> userManager)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerService logger, UserManager<ApplicationUser> userManager, ICartService cartService)
         {
             if (env.IsDevelopment())
             {
@@ -103,7 +103,7 @@ namespace WebAPI
                 endpoints.MapControllers();
             });
 
-            IdentitySeed.Seed(userManager).Wait();
+            IdentitySeed.Seed(userManager, cartService).Wait();
         }
     }
 }

@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Business.Abstract;
 using Core.Entities.Concrete;
 using Microsoft.AspNetCore.Identity;
 
@@ -6,7 +7,7 @@ namespace WebAPI.Seeds
 {
     public static class IdentitySeed
     {
-        public static async Task Seed(UserManager<ApplicationUser> userManager)
+        public static async Task Seed(UserManager<ApplicationUser> userManager, ICartService cartService)
         {
             var user = await userManager.FindByNameAsync("admin@notebookpower.com");
 
@@ -21,7 +22,12 @@ namespace WebAPI.Seeds
                     RoleName = "admin"
                 };
 
-                await userManager.CreateAsync(newUser, "Notebookpoweradmin1");
+                var result = await userManager.CreateAsync(newUser, "Notebookpoweradmin1");
+                if (result.Succeeded)
+                {
+                    var admin = await userManager.FindByEmailAsync("admin@notebookpower.com");
+                    await cartService.Create(admin.Id);
+                }
             }
         }
     }

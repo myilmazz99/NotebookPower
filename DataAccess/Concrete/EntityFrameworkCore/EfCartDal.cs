@@ -41,7 +41,7 @@ namespace DataAccess.Concrete.EntityFrameworkCore
                 }
 
                 await context.SaveChangesAsync();
-                return await context.Set<CartItem>().Include(i => i.Product).FirstOrDefaultAsync(i => i.Id == cartItem.Id);
+                return await context.Set<CartItem>().Include(i => i.Product).ThenInclude(i => i.ProductImages).FirstOrDefaultAsync(i => i.Id == cartItem.Id);
             }
         }
 
