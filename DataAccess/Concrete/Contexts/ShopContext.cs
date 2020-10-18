@@ -1,4 +1,5 @@
 ﻿using Entities;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Concrete.Contexts
@@ -8,7 +9,13 @@ namespace DataAccess.Concrete.Contexts
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server=(localdb)\MSSQLLocalDB;Database=NotebookPowerDB;Trusted_Connection=True");
+            optionsBuilder.UseSqlServer(new SqlConnectionStringBuilder
+            {
+                UserID = "sqlserver",
+                Password = "Notebookpoweradmin1",
+                DataSource = "34.65.36.167",
+                InitialCatalog = "NotebookPowerDB",
+            }.ConnectionString);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
