@@ -100,7 +100,7 @@ namespace WebAPI
 
             app.UseRouting();
 
-            app.UseCors(conf => conf.SetIsOriginAllowed(x => _ = true).WithOrigins("https://wonderful-dune-027900103.azurestaticapps.net").AllowAnyMethod().AllowAnyHeader().AllowCredentials());
+            app.UseCors(conf => conf.SetIsOriginAllowed(x => _ = true).WithOrigins("https://myilmazz99.github.io/NotebookpowerUI/").AllowAnyMethod().AllowAnyHeader().AllowCredentials());
 
             app.UseAuthentication();
             app.UseAuthorization();
