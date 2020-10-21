@@ -51,13 +51,7 @@ namespace WebAPI
             var tokenOptions = Configuration.GetSection("TokenOptions").Get<JWTTokenOptions>();
             services.ConfigureJwt(tokenOptions);
 
-            services.AddDbContext<ShopIdentityContext>(opt => opt.UseSqlServer(new SqlConnectionStringBuilder
-            {
-                UserID = "sqlserver",
-                Password = "Notebookpoweradmin1",
-                DataSource = "34.65.36.167",
-                InitialCatalog = "NotebookPowerDB",
-            }.ConnectionString));
+            services.AddDbContext<ShopIdentityContext>(opt => opt.UseSqlServer("Server=34.65.36.167;Initial Catalog=NotebookPowerDB;Persist Security Info=False;User ID=sqlserver;Password=Notebookpoweradmin1;MultipleActiveResultSets=False;TrustServerCertificate=False;Connection Timeout=30;"));
             services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ShopIdentityContext>().AddDefaultTokenProviders();
 
             services.Configure<IdentityOptions>(opt =>

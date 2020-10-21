@@ -9,13 +9,7 @@ namespace DataAccess.Concrete.Contexts
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(new SqlConnectionStringBuilder
-            {
-                UserID = "sqlserver",
-                Password = "Notebookpoweradmin1",
-                DataSource = "34.65.36.167",
-                InitialCatalog = "NotebookPowerDB",
-            }.ConnectionString);
+            optionsBuilder.UseSqlServer("Server=34.65.36.167;Initial Catalog=NotebookPowerDB;Persist Security Info=False;User ID=sqlserver;Password=Notebookpoweradmin1;MultipleActiveResultSets=False;TrustServerCertificate=False;Connection Timeout=30;");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
