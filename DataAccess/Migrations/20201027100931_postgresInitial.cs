@@ -1,9 +1,10 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace DataAccess.Migrations.Shop
+namespace DataAccess.Migrations
 {
-    public partial class favorites : Migration
+    public partial class postgresInitial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,8 +13,8 @@ namespace DataAccess.Migrations.Shop
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    UserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -25,7 +26,7 @@ namespace DataAccess.Migrations.Shop
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     CategoryName = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -34,11 +35,59 @@ namespace DataAccess.Migrations.Shop
                 });
 
             migrationBuilder.CreateTable(
+                name: "EmailList",
+                columns: table => new
+                {
+                    Email = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EmailList", x => x.Email);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Feedbacks",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Email = table.Column<string>(nullable: true),
+                    FeedbackText = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Feedbacks", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Orders",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Status = table.Column<int>(nullable: false),
+                    OrderDate = table.Column<DateTime>(nullable: false),
+                    TotalPrice = table.Column<double>(nullable: false),
+                    UserId = table.Column<string>(nullable: true),
+                    FullName = table.Column<string>(nullable: true),
+                    PhoneNumber = table.Column<string>(nullable: true),
+                    AddressHeader = table.Column<string>(nullable: true),
+                    City = table.Column<string>(nullable: true),
+                    State = table.Column<string>(nullable: true),
+                    AddressDescription = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Orders", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Specifications",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     SpecificationName = table.Column<string>(nullable: true),
                     SpecificationValue = table.Column<string>(nullable: true)
                 },
@@ -48,30 +97,11 @@ namespace DataAccess.Migrations.Shop
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserAddress",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    FullName = table.Column<string>(nullable: true),
-                    PhoneNumber = table.Column<string>(nullable: true),
-                    Header = table.Column<string>(nullable: true),
-                    City = table.Column<string>(nullable: true),
-                    State = table.Column<string>(nullable: true),
-                    Description = table.Column<string>(nullable: true),
-                    UserId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserAddress", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Products",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     ProductName = table.Column<string>(nullable: true),
                     ProductDescription = table.Column<string>(nullable: true),
                     Stock = table.Column<int>(nullable: false),
@@ -93,23 +123,23 @@ namespace DataAccess.Migrations.Shop
                 });
 
             migrationBuilder.CreateTable(
-                name: "Orders",
+                name: "OrderItem",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Status = table.Column<int>(nullable: false),
-                    OrderDate = table.Column<DateTime>(nullable: false),
-                    UserAddressId = table.Column<int>(nullable: false),
-                    UserId = table.Column<string>(nullable: true)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    ProductName = table.Column<string>(nullable: true),
+                    ProductPrice = table.Column<double>(nullable: false),
+                    ProductQuantity = table.Column<int>(nullable: false),
+                    OrderId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Orders", x => x.Id);
+                    table.PrimaryKey("PK_OrderItem", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Orders_UserAddress_UserAddressId",
-                        column: x => x.UserAddressId,
-                        principalTable: "UserAddress",
+                        name: "FK_OrderItem_Orders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Orders",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -119,7 +149,7 @@ namespace DataAccess.Migrations.Shop
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     ProductQuantity = table.Column<int>(nullable: false),
                     ProductId = table.Column<int>(nullable: false),
                     CartId = table.Column<int>(nullable: false)
@@ -146,10 +176,11 @@ namespace DataAccess.Migrations.Shop
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     CommentText = table.Column<string>(nullable: true),
                     Rating = table.Column<byte>(nullable: false),
-                    UserId = table.Column<int>(nullable: false),
+                    UserId = table.Column<string>(nullable: true),
+                    Username = table.Column<string>(nullable: true),
                     ProductId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -168,7 +199,7 @@ namespace DataAccess.Migrations.Shop
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     ProductId = table.Column<int>(nullable: false),
                     UserId = table.Column<string>(nullable: true)
                 },
@@ -188,7 +219,7 @@ namespace DataAccess.Migrations.Shop
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     ImageUrl = table.Column<string>(nullable: true),
                     FileName = table.Column<string>(nullable: true),
                     ProductId = table.Column<int>(nullable: false)
@@ -228,28 +259,6 @@ namespace DataAccess.Migrations.Shop
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "OrderItem",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ProductName = table.Column<string>(nullable: true),
-                    ProductPrice = table.Column<double>(nullable: false),
-                    ProductQuantity = table.Column<int>(nullable: false),
-                    OrderId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_OrderItem", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_OrderItem_Orders_OrderId",
-                        column: x => x.OrderId,
-                        principalTable: "Orders",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_CartItem_CartId",
                 table: "CartItem",
@@ -276,11 +285,6 @@ namespace DataAccess.Migrations.Shop
                 column: "OrderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Orders_UserAddressId",
-                table: "Orders",
-                column: "UserAddressId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_ProductImage_ProductId",
                 table: "ProductImage",
                 column: "ProductId");
@@ -305,7 +309,13 @@ namespace DataAccess.Migrations.Shop
                 name: "Comment");
 
             migrationBuilder.DropTable(
+                name: "EmailList");
+
+            migrationBuilder.DropTable(
                 name: "Favorites");
+
+            migrationBuilder.DropTable(
+                name: "Feedbacks");
 
             migrationBuilder.DropTable(
                 name: "OrderItem");
@@ -327,9 +337,6 @@ namespace DataAccess.Migrations.Shop
 
             migrationBuilder.DropTable(
                 name: "Specifications");
-
-            migrationBuilder.DropTable(
-                name: "UserAddress");
 
             migrationBuilder.DropTable(
                 name: "Categories");

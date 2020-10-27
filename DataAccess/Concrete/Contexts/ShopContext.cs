@@ -1,5 +1,4 @@
 ﻿using Entities;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Concrete.Contexts
@@ -9,7 +8,7 @@ namespace DataAccess.Concrete.Contexts
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=34.65.36.167;Initial Catalog=NotebookPowerDB;Persist Security Info=False;User ID=sqlserver;Password=Notebookpoweradmin1;MultipleActiveResultSets=False;TrustServerCertificate=False;Connection Timeout=30;");
+            optionsBuilder.UseNpgsql("Server=34.65.198.177;Database=NotebookPowerDB;Username=postgres;Password=posmusti230395;");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

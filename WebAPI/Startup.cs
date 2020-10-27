@@ -1,14 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
 using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 using AutoMapper;
 using Business.Abstract;
-using Business.Concrete;
 using Business.Services;
 using Business.Utilities;
 using Business.Utilities.Nlog;
@@ -20,7 +13,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -51,7 +43,7 @@ namespace WebAPI
             var tokenOptions = Configuration.GetSection("TokenOptions").Get<JWTTokenOptions>();
             services.ConfigureJwt(tokenOptions);
 
-            services.AddDbContext<ShopIdentityContext>(opt => opt.UseSqlServer("Server=34.65.36.167;Initial Catalog=NotebookPowerDB;Persist Security Info=False;User ID=sqlserver;Password=Notebookpoweradmin1;MultipleActiveResultSets=False;TrustServerCertificate=False;Connection Timeout=30;"));
+            services.AddDbContext<ShopIdentityContext>(opt => opt.UseNpgsql("Server=34.65.198.177;Database=NotebookPowerDB;Username=postgres;Password=posmusti230395;"));
             services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ShopIdentityContext>().AddDefaultTokenProviders();
 
             services.Configure<IdentityOptions>(opt =>
