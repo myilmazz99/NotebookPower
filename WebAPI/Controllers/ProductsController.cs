@@ -33,7 +33,6 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> Add([FromBody] ProductDto productDto)
         {
             var specIds = await _specificationService.Create(productDto.Specifications);
-
             return Ok(await _productService.Add(productDto, specIds));
         }
 

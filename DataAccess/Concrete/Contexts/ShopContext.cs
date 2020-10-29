@@ -8,7 +8,7 @@ namespace DataAccess.Concrete.Contexts
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql("Server=34.65.198.177;Database=NotebookPowerDB;Username=postgres;Password=posmusti230395;");
+            optionsBuilder.UseNpgsql("Server=34.65.198.177;Database=NotebookPowerDB;Username=postgres;Password=posmusti230395;").UseLowerCaseNamingConvention();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

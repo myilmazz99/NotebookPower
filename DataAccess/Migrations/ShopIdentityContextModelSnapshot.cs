@@ -3,17 +3,15 @@ using System;
 using DataAccess.Concrete.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace DataAccess.Migrations.ShopIdentity
+namespace DataAccess.Migrations
 {
     [DbContext(typeof(ShopIdentityContext))]
-    [Migration("20201027101109_postgresIdentityInitial")]
-    partial class postgresIdentityInitial
+    partial class ShopIdentityContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -24,62 +22,80 @@ namespace DataAccess.Migrations.ShopIdentity
             modelBuilder.Entity("Core.Entities.Concrete.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
+                        .HasColumnName("id")
                         .HasColumnType("text");
 
                     b.Property<int>("AccessFailedCount")
+                        .HasColumnName("accessfailedcount")
                         .HasColumnType("integer");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
+                        .HasColumnName("concurrencystamp")
                         .HasColumnType("text");
 
                     b.Property<string>("Email")
+                        .HasColumnName("email")
                         .HasColumnType("character varying(256)")
                         .HasMaxLength(256);
 
                     b.Property<bool>("EmailConfirmed")
+                        .HasColumnName("emailconfirmed")
                         .HasColumnType("boolean");
 
                     b.Property<string>("FullName")
+                        .HasColumnName("fullname")
                         .HasColumnType("text");
 
                     b.Property<bool>("LockoutEnabled")
+                        .HasColumnName("lockoutenabled")
                         .HasColumnType("boolean");
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnName("lockoutend")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("NormalizedEmail")
+                        .HasColumnName("normalizedemail")
                         .HasColumnType("character varying(256)")
                         .HasMaxLength(256);
 
                     b.Property<string>("NormalizedUserName")
+                        .HasColumnName("normalizedusername")
                         .HasColumnType("character varying(256)")
                         .HasMaxLength(256);
 
                     b.Property<string>("PasswordHash")
+                        .HasColumnName("passwordhash")
                         .HasColumnType("text");
 
                     b.Property<string>("PhoneNumber")
+                        .HasColumnName("phonenumber")
                         .HasColumnType("text");
 
                     b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnName("phonenumberconfirmed")
                         .HasColumnType("boolean");
 
                     b.Property<string>("RoleName")
+                        .HasColumnName("rolename")
                         .HasColumnType("text");
 
                     b.Property<string>("SecurityStamp")
+                        .HasColumnName("securitystamp")
                         .HasColumnType("text");
 
                     b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnName("twofactorenabled")
                         .HasColumnType("boolean");
 
                     b.Property<string>("UserName")
+                        .HasColumnName("username")
                         .HasColumnType("character varying(256)")
                         .HasMaxLength(256);
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_users");
 
                     b.HasIndex("NormalizedEmail")
                         .HasName("EmailIndex");
@@ -94,21 +110,26 @@ namespace DataAccess.Migrations.ShopIdentity
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
+                        .HasColumnName("id")
                         .HasColumnType("text");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
+                        .HasColumnName("concurrencystamp")
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
+                        .HasColumnName("name")
                         .HasColumnType("character varying(256)")
                         .HasMaxLength(256);
 
                     b.Property<string>("NormalizedName")
+                        .HasColumnName("normalizedname")
                         .HasColumnType("character varying(256)")
                         .HasMaxLength(256);
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_roles");
 
                     b.HasIndex("NormalizedName")
                         .IsUnique()
@@ -121,22 +142,28 @@ namespace DataAccess.Migrations.ShopIdentity
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnName("id")
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("ClaimType")
+                        .HasColumnName("claimtype")
                         .HasColumnType("text");
 
                     b.Property<string>("ClaimValue")
+                        .HasColumnName("claimvalue")
                         .HasColumnType("text");
 
                     b.Property<string>("RoleId")
                         .IsRequired()
+                        .HasColumnName("roleid")
                         .HasColumnType("text");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_roleclaims");
 
-                    b.HasIndex("RoleId");
+                    b.HasIndex("RoleId")
+                        .HasName("ix_roleclaims_roleid");
 
                     b.ToTable("AspNetRoleClaims");
                 });
@@ -145,22 +172,28 @@ namespace DataAccess.Migrations.ShopIdentity
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnName("id")
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("ClaimType")
+                        .HasColumnName("claimtype")
                         .HasColumnType("text");
 
                     b.Property<string>("ClaimValue")
+                        .HasColumnName("claimvalue")
                         .HasColumnType("text");
 
                     b.Property<string>("UserId")
                         .IsRequired()
+                        .HasColumnName("userid")
                         .HasColumnType("text");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_userclaims");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId")
+                        .HasName("ix_userclaims_userid");
 
                     b.ToTable("AspNetUserClaims");
                 });
@@ -168,21 +201,27 @@ namespace DataAccess.Migrations.ShopIdentity
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
+                        .HasColumnName("loginprovider")
                         .HasColumnType("text");
 
                     b.Property<string>("ProviderKey")
+                        .HasColumnName("providerkey")
                         .HasColumnType("text");
 
                     b.Property<string>("ProviderDisplayName")
+                        .HasColumnName("providerdisplayname")
                         .HasColumnType("text");
 
                     b.Property<string>("UserId")
                         .IsRequired()
+                        .HasColumnName("userid")
                         .HasColumnType("text");
 
-                    b.HasKey("LoginProvider", "ProviderKey");
+                    b.HasKey("LoginProvider", "ProviderKey")
+                        .HasName("pk_userlogins");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId")
+                        .HasName("ix_userlogins_userid");
 
                     b.ToTable("AspNetUserLogins");
                 });
@@ -190,14 +229,18 @@ namespace DataAccess.Migrations.ShopIdentity
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
                     b.Property<string>("UserId")
+                        .HasColumnName("userid")
                         .HasColumnType("text");
 
                     b.Property<string>("RoleId")
+                        .HasColumnName("roleid")
                         .HasColumnType("text");
 
-                    b.HasKey("UserId", "RoleId");
+                    b.HasKey("UserId", "RoleId")
+                        .HasName("pk_userroles");
 
-                    b.HasIndex("RoleId");
+                    b.HasIndex("RoleId")
+                        .HasName("ix_userroles_roleid");
 
                     b.ToTable("AspNetUserRoles");
                 });
@@ -205,18 +248,23 @@ namespace DataAccess.Migrations.ShopIdentity
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
                     b.Property<string>("UserId")
+                        .HasColumnName("userid")
                         .HasColumnType("text");
 
                     b.Property<string>("LoginProvider")
+                        .HasColumnName("loginprovider")
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
+                        .HasColumnName("name")
                         .HasColumnType("text");
 
                     b.Property<string>("Value")
+                        .HasColumnName("value")
                         .HasColumnType("text");
 
-                    b.HasKey("UserId", "LoginProvider", "Name");
+                    b.HasKey("UserId", "LoginProvider", "Name")
+                        .HasName("pk_usertokens");
 
                     b.ToTable("AspNetUserTokens");
                 });
@@ -226,6 +274,7 @@ namespace DataAccess.Migrations.ShopIdentity
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
+                        .HasConstraintName("fk_roleclaims_aspnetroles_identityroleid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -235,6 +284,7 @@ namespace DataAccess.Migrations.ShopIdentity
                     b.HasOne("Core.Entities.Concrete.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
+                        .HasConstraintName("fk_userclaims_aspnetusers_applicationuserid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -244,6 +294,7 @@ namespace DataAccess.Migrations.ShopIdentity
                     b.HasOne("Core.Entities.Concrete.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
+                        .HasConstraintName("fk_userlogins_aspnetusers_applicationuserid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -253,12 +304,14 @@ namespace DataAccess.Migrations.ShopIdentity
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
+                        .HasConstraintName("fk_userroles_aspnetroles_identityroleid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Core.Entities.Concrete.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
+                        .HasConstraintName("fk_userroles_aspnetusers_applicationuserid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -268,6 +321,7 @@ namespace DataAccess.Migrations.ShopIdentity
                     b.HasOne("Core.Entities.Concrete.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
+                        .HasConstraintName("fk_usertokens_aspnetusers_applicationuserid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

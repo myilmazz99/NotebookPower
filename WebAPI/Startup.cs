@@ -43,7 +43,7 @@ namespace WebAPI
             var tokenOptions = Configuration.GetSection("TokenOptions").Get<JWTTokenOptions>();
             services.ConfigureJwt(tokenOptions);
 
-            services.AddDbContext<ShopIdentityContext>(opt => opt.UseNpgsql("Server=34.65.198.177;Database=NotebookPowerDB;Username=postgres;Password=posmusti230395;"));
+            services.AddDbContext<ShopIdentityContext>(opt => opt.UseNpgsql("Server=34.65.198.177;Database=NotebookPowerDB;Username=postgres;Password=posmusti230395;").UseLowerCaseNamingConvention());
             services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ShopIdentityContext>().AddDefaultTokenProviders();
 
             services.Configure<IdentityOptions>(opt =>

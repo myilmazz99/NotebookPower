@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace DataAccess.Migrations
+namespace DataAccess.Migrations.Shop
 {
     [DbContext(typeof(ShopContext))]
     partial class ShopContextModelSnapshot : ModelSnapshot
@@ -23,297 +23,374 @@ namespace DataAccess.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnName("id")
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("UserId")
+                        .HasColumnName("userid")
                         .HasColumnType("text");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_carts");
 
-                    b.ToTable("Carts");
+                    b.ToTable("carts");
                 });
 
             modelBuilder.Entity("Entities.CartItem", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnName("id")
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<int>("CartId")
+                        .HasColumnName("cartid")
                         .HasColumnType("integer");
 
                     b.Property<int>("ProductId")
+                        .HasColumnName("productid")
                         .HasColumnType("integer");
 
                     b.Property<int>("ProductQuantity")
+                        .HasColumnName("productquantity")
                         .HasColumnType("integer");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_cartitem");
 
-                    b.HasIndex("CartId");
+                    b.HasIndex("CartId")
+                        .HasName("ix_cartitem_cartid");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("ProductId")
+                        .HasName("ix_cartitem_productid");
 
-                    b.ToTable("CartItem");
+                    b.ToTable("cartitem");
                 });
 
             modelBuilder.Entity("Entities.Category", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnName("id")
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("CategoryName")
+                        .HasColumnName("categoryname")
                         .HasColumnType("text");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_categories");
 
-                    b.ToTable("Categories");
+                    b.ToTable("categories");
                 });
 
             modelBuilder.Entity("Entities.Comment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnName("id")
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("CommentText")
+                        .HasColumnName("commenttext")
                         .HasColumnType("text");
 
                     b.Property<int>("ProductId")
+                        .HasColumnName("productid")
                         .HasColumnType("integer");
 
                     b.Property<byte>("Rating")
+                        .HasColumnName("rating")
                         .HasColumnType("smallint");
 
                     b.Property<string>("UserId")
+                        .HasColumnName("userid")
                         .HasColumnType("text");
 
                     b.Property<string>("Username")
+                        .HasColumnName("username")
                         .HasColumnType("text");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_comment");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("ProductId")
+                        .HasName("ix_comment_productid");
 
-                    b.ToTable("Comment");
+                    b.ToTable("comment");
                 });
 
             modelBuilder.Entity("Entities.EmailList", b =>
                 {
                     b.Property<string>("Email")
+                        .HasColumnName("email")
                         .HasColumnType("text");
 
-                    b.HasKey("Email");
+                    b.HasKey("Email")
+                        .HasName("pk_emaillist");
 
-                    b.ToTable("EmailList");
+                    b.ToTable("emaillist");
                 });
 
             modelBuilder.Entity("Entities.Favorite", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnName("id")
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<int>("ProductId")
+                        .HasColumnName("productid")
                         .HasColumnType("integer");
 
                     b.Property<string>("UserId")
+                        .HasColumnName("userid")
                         .HasColumnType("text");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_favorites");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("ProductId")
+                        .HasName("ix_favorites_productid");
 
-                    b.ToTable("Favorites");
+                    b.ToTable("favorites");
                 });
 
             modelBuilder.Entity("Entities.Feedback", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnName("id")
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("Email")
+                        .HasColumnName("email")
                         .HasColumnType("text");
 
                     b.Property<string>("FeedbackText")
+                        .HasColumnName("feedbacktext")
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
+                        .HasColumnName("name")
                         .HasColumnType("text");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_feedbacks");
 
-                    b.ToTable("Feedbacks");
+                    b.ToTable("feedbacks");
                 });
 
             modelBuilder.Entity("Entities.Order", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnName("id")
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("AddressDescription")
+                        .HasColumnName("addressdescription")
                         .HasColumnType("text");
 
                     b.Property<string>("AddressHeader")
+                        .HasColumnName("addressheader")
                         .HasColumnType("text");
 
                     b.Property<string>("City")
+                        .HasColumnName("city")
                         .HasColumnType("text");
 
                     b.Property<string>("FullName")
+                        .HasColumnName("fullname")
                         .HasColumnType("text");
 
                     b.Property<DateTime>("OrderDate")
+                        .HasColumnName("orderdate")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("PhoneNumber")
+                        .HasColumnName("phonenumber")
                         .HasColumnType("text");
 
                     b.Property<string>("State")
+                        .HasColumnName("state")
                         .HasColumnType("text");
 
                     b.Property<int>("Status")
+                        .HasColumnName("status")
                         .HasColumnType("integer");
 
                     b.Property<double>("TotalPrice")
+                        .HasColumnName("totalprice")
                         .HasColumnType("double precision");
 
                     b.Property<string>("UserId")
+                        .HasColumnName("userid")
                         .HasColumnType("text");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_orders");
 
-                    b.ToTable("Orders");
+                    b.ToTable("orders");
                 });
 
             modelBuilder.Entity("Entities.OrderItem", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnName("id")
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<int>("OrderId")
+                        .HasColumnName("orderid")
                         .HasColumnType("integer");
 
                     b.Property<string>("ProductName")
+                        .HasColumnName("productname")
                         .HasColumnType("text");
 
                     b.Property<double>("ProductPrice")
+                        .HasColumnName("productprice")
                         .HasColumnType("double precision");
 
                     b.Property<int>("ProductQuantity")
+                        .HasColumnName("productquantity")
                         .HasColumnType("integer");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_orderitem");
 
-                    b.HasIndex("OrderId");
+                    b.HasIndex("OrderId")
+                        .HasName("ix_orderitem_orderid");
 
-                    b.ToTable("OrderItem");
+                    b.ToTable("orderitem");
                 });
 
             modelBuilder.Entity("Entities.Product", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnName("id")
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<int>("CategoryId")
+                        .HasColumnName("categoryid")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("DateAdded")
+                        .HasColumnName("dateadded")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<double>("NewPrice")
+                        .HasColumnName("newprice")
                         .HasColumnType("double precision");
 
                     b.Property<double>("OldPrice")
+                        .HasColumnName("oldprice")
                         .HasColumnType("double precision");
 
                     b.Property<int>("OrderCount")
+                        .HasColumnName("ordercount")
                         .HasColumnType("integer");
 
                     b.Property<string>("ProductDescription")
+                        .HasColumnName("productdescription")
                         .HasColumnType("text");
 
                     b.Property<string>("ProductName")
+                        .HasColumnName("productname")
                         .HasColumnType("text");
 
                     b.Property<int>("Stock")
+                        .HasColumnName("stock")
                         .HasColumnType("integer");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_products");
 
-                    b.HasIndex("CategoryId");
+                    b.HasIndex("CategoryId")
+                        .HasName("ix_products_categoryid");
 
-                    b.ToTable("Products");
+                    b.ToTable("products");
                 });
 
             modelBuilder.Entity("Entities.ProductImage", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnName("id")
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("FileName")
+                        .HasColumnName("filename")
                         .HasColumnType("text");
 
                     b.Property<string>("ImageUrl")
+                        .HasColumnName("imageurl")
                         .HasColumnType("text");
 
                     b.Property<int>("ProductId")
+                        .HasColumnName("productid")
                         .HasColumnType("integer");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_productimage");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("ProductId")
+                        .HasName("ix_productimage_productid");
 
-                    b.ToTable("ProductImage");
+                    b.ToTable("productimage");
                 });
 
             modelBuilder.Entity("Entities.ProductSpecification", b =>
                 {
                     b.Property<int>("ProductId")
+                        .HasColumnName("productid")
                         .HasColumnType("integer");
 
                     b.Property<int>("SpecificationId")
+                        .HasColumnName("specificationid")
                         .HasColumnType("integer");
 
-                    b.HasKey("ProductId", "SpecificationId");
+                    b.HasKey("ProductId", "SpecificationId")
+                        .HasName("pk_productspecification");
 
-                    b.HasIndex("SpecificationId");
+                    b.HasIndex("SpecificationId")
+                        .HasName("ix_productspecification_specificationid");
 
-                    b.ToTable("ProductSpecification");
+                    b.ToTable("productspecification");
                 });
 
             modelBuilder.Entity("Entities.Specification", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnName("id")
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("SpecificationName")
+                        .HasColumnName("specificationname")
                         .HasColumnType("text");
 
                     b.Property<string>("SpecificationValue")
+                        .HasColumnName("specificationvalue")
                         .HasColumnType("text");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_specifications");
 
-                    b.ToTable("Specifications");
+                    b.ToTable("specifications");
                 });
 
             modelBuilder.Entity("Entities.CartItem", b =>
@@ -321,12 +398,14 @@ namespace DataAccess.Migrations
                     b.HasOne("Entities.Cart", "Cart")
                         .WithMany("CartItems")
                         .HasForeignKey("CartId")
+                        .HasConstraintName("fk_cartitem_carts_cartid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Entities.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
+                        .HasConstraintName("fk_cartitem_products_productid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -336,6 +415,7 @@ namespace DataAccess.Migrations
                     b.HasOne("Entities.Product", "Product")
                         .WithMany("Comments")
                         .HasForeignKey("ProductId")
+                        .HasConstraintName("fk_comment_products_productid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -345,6 +425,7 @@ namespace DataAccess.Migrations
                     b.HasOne("Entities.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
+                        .HasConstraintName("fk_favorites_products_productid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -354,6 +435,7 @@ namespace DataAccess.Migrations
                     b.HasOne("Entities.Order", "Order")
                         .WithMany("OrderItems")
                         .HasForeignKey("OrderId")
+                        .HasConstraintName("fk_orderitem_orders_orderid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -363,6 +445,7 @@ namespace DataAccess.Migrations
                     b.HasOne("Entities.Category", "Category")
                         .WithMany("Products")
                         .HasForeignKey("CategoryId")
+                        .HasConstraintName("fk_products_categories_categoryid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -372,6 +455,7 @@ namespace DataAccess.Migrations
                     b.HasOne("Entities.Product", "Product")
                         .WithMany("ProductImages")
                         .HasForeignKey("ProductId")
+                        .HasConstraintName("fk_productimage_products_productid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -381,12 +465,14 @@ namespace DataAccess.Migrations
                     b.HasOne("Entities.Product", "Product")
                         .WithMany("ProductSpecifications")
                         .HasForeignKey("ProductId")
+                        .HasConstraintName("fk_productspecification_products_productid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Entities.Specification", "Specification")
                         .WithMany("ProductSpecifications")
                         .HasForeignKey("SpecificationId")
+                        .HasConstraintName("fk_productspecification_specifications_specificationid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
