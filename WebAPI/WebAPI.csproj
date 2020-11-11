@@ -19,8 +19,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Business\Business.csproj" />
     <ProjectReference Include="..\DataAccess\DataAccess.csproj" />
-    <ProjectReference Include="..\Tests\Tests.csproj" />
-  </ItemGroup>
+    </ItemGroup>
 
   <ItemGroup>
     <Folder Include="wwwroot\uploads\" />
