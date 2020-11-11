@@ -13,6 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Business.Utilities.Aspects;
 using Autofac.Extras.DynamicProxy;
+using System.Linq;
 
 namespace Business.Concrete
 {
@@ -27,12 +28,13 @@ namespace Business.Concrete
             _mapper = mapper;
         }
 
-        public async Task<ProductDto> Add(ProductDto entity, IEnumerable<int> specIds)
+        public async Task<int> Add(ProductDto entity)
         {
             Validator.Validate(entity, new ProductValidation());
-            var productId = await _productDal.Create(_mapper.Map<Product>(entity), specIds);
-            entity.Id = productId;
-            return entity;
+            Product product = _mapper.Map<Product>(entity);
+            product.ProductSpecifications = entity.Specifications.Select(i=> new ProductSpecification{ Specification = new Specification{SpecificationName = i.SpecificationName, SpecificationValue = i.SpecificationValue} }).ToList();
+            
+            return await _productDal.Create(product);
         }
 
         public async Task AddImages(List<ProductImageDto> images)

@@ -16,15 +16,26 @@ namespace DataAccess.Concrete.EntityFrameworkCore
     public class EfProductDal<TContext> : EfEntityRepository<Product, ShopContext>, IProductDal
         where TContext : DbContext, new()
     {
-        public async Task<int> Create(Product entity, IEnumerable<int> specIds)
+        public async Task<int> Create(Product entity)
         {
             using (var context = new TContext())
-            {
-                entity.ProductSpecifications = specIds.Select(i => new ProductSpecification { ProductId = entity.Id, SpecificationId = i }).ToList();
-                await context.Set<Product>().AddAsync(entity);
-                await context.SaveChangesAsync();
-                return entity.Id;
-            }
+                using (var transaction = await context.Database.BeginTransactionAsync())
+                {
+                    try
+                    {
+                        await context.Set<Product>().AddAsync(entity);
+                        await context.SaveChangesAsync();
+                        
+                        await transaction.CommitAsync();
+
+                        return entity.Id;
+                    }
+                    catch (Exception ex)
+                    {
+                        await transaction.RollbackAsync();
+                        throw ex;
+                    }
+                }
         }
 
         public async Task AddImages(List<ProductImage> images)

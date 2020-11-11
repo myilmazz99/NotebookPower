@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Business.Abstract;
 using Entities.Dtos;
@@ -30,10 +31,30 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("add")]
-        public async Task<IActionResult> Add([FromBody] ProductDto productDto)
+        public async Task<IActionResult> Add([FromForm] ProductDto productDto, [FromForm] List<IFormFile> productImages, [FromForm] string specifications)
         {
-            var specIds = await _specificationService.Create(productDto.Specifications);
-            return Ok(await _productService.Add(productDto, specIds));
+            productDto.Specifications = JsonSerializer.Deserialize<List<SpecificationDto>>(specifications, new JsonSerializerOptions{PropertyNameCaseInsensitive = true});
+
+            if (productImages.Count != 0){
+
+                productDto.ProductImages = productDto.ProductImages ?? new List<ProductImageDto>();
+
+                foreach (var file in productImages)
+                {
+                    var uniqueFileName = Guid.NewGuid().ToString() + "_" + file.FileName;
+                    var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", uniqueFileName);
+                    var publicPath = Path.Combine(Path.DirectorySeparatorChar.ToString(), "uploads", uniqueFileName);
+
+                    using (var stream = new FileStream(path, FileMode.Create))
+                    {
+                        await file.CopyToAsync(stream);
+                    }
+
+                    productDto.ProductImages.Add(new ProductImageDto { FileName = uniqueFileName, ImageUrl = publicPath});
+                }
+            }
+
+            return Ok(await _productService.Add(productDto));
         }
 
         [HttpPut]
@@ -48,41 +69,6 @@ namespace WebAPI.Controllers
         {
             await _productService.Delete(int.Parse(id));
             return NoContent();
-        }
-
-        [HttpPost("addImages")]
-        public async Task<IActionResult> AddImages([FromForm] List<IFormFile> productImages, [FromForm] int productId)
-        {
-            if (productImages.Count == 0) return NoContent();
-
-            var images = new List<ProductImageDto>();
-
-            try
-            {
-                foreach (var file in productImages)
-                {
-                    var uniqueFileName = Guid.NewGuid().ToString() + "_" + file.FileName;
-                    var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", uniqueFileName);
-                    var publicPath = Path.Combine(Path.DirectorySeparatorChar.ToString(), "uploads", uniqueFileName);
-
-                    using (var stream = new FileStream(path, FileMode.Create))
-                    {
-                        await file.CopyToAsync(stream);
-                    }
-
-                    images.Add(new ProductImageDto { FileName = uniqueFileName, ImageUrl = publicPath, ProductId = productId });
-                }
-
-                await _productService.AddImages(images);
-
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-
-
         }
 
         [HttpGet]

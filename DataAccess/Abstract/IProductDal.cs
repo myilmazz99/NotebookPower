@@ -10,7 +10,7 @@ namespace DataAccess.Abstract
 {
     public interface IProductDal : IEntityRepository<Product>
     {
-        Task<int> Create(Product entity, IEnumerable<int> specIds);
+        Task<int> Create(Product entity);
         Task<Product> GetById(int id);
         Task<List<Product>> GetBestSeller();
         Task<List<Product>> GetDailyDeals();

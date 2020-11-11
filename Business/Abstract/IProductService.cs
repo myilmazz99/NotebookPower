@@ -8,7 +8,7 @@ namespace Business.Abstract
 {
     public interface IProductService
     {
-        Task<ProductDto> Add(ProductDto entity, IEnumerable<int> specIds);
+        Task<int> Add(ProductDto entity);
         Task<ProductDto> GetById(int id);
         Task AddImages(List<ProductImageDto> images);
         Task<List<ProductDto>> GetAllWithIncludes();
