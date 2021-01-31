@@ -122,7 +122,7 @@ namespace DataAccess.Concrete.EntityFrameworkCore
         {
             using (var context = new TContext())
             {
-                var entity = await context.Set<Product>().Include(i => i.ProductSpecifications).FirstOrDefaultAsync(i => i.Id == product.Id);
+                var entity = await context.Set<Product>().Include(i => i.ProductSpecifications).Include(i=>i.ProductImages).FirstOrDefaultAsync(i => i.Id == product.Id);
 
                 if (entity != null)
                 {
@@ -138,6 +138,9 @@ namespace DataAccess.Concrete.EntityFrameworkCore
                     entity.ProductDescription = product.ProductDescription;
                     entity.ProductName = product.ProductName;
                     entity.Stock = product.Stock;
+                    
+                    if(product.ProductImages.Count > 0)
+                       entity.ProductImages.AddRange(product.ProductImages);
 
                     await context.SaveChangesAsync();
                 }

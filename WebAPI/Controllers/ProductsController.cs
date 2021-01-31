@@ -57,9 +57,30 @@ namespace WebAPI.Controllers
             return Ok(await _productService.Add(productDto));
         }
 
-        [HttpPut]
-        public async Task<IActionResult> Update([FromBody] ProductDto productDto)
+        [HttpPost("update")]
+        public async Task<IActionResult> Update([FromForm] ProductDto productDto, [FromForm] List<IFormFile> productImages, [FromForm] string specifications)
         {
+            productDto.Specifications = JsonSerializer.Deserialize<List<SpecificationDto>>(specifications, new JsonSerializerOptions{PropertyNameCaseInsensitive = true});
+
+            if (productImages.Count != 0){
+
+                productDto.ProductImages = productDto.ProductImages ?? new List<ProductImageDto>();
+
+                foreach (var file in productImages)
+                {
+                    var uniqueFileName = Guid.NewGuid().ToString() + "_" + file.FileName;
+                    var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", uniqueFileName);
+                    var publicPath = Path.Combine(Path.DirectorySeparatorChar.ToString(), "uploads", uniqueFileName);
+
+                    using (var stream = new FileStream(path, FileMode.Create))
+                    {
+                        await file.CopyToAsync(stream);
+                    }
+
+                    productDto.ProductImages.Add(new ProductImageDto { FileName = uniqueFileName, ImageUrl = publicPath});
+                }
+            }
+
             var specIds = await _specificationService.Create(productDto.Specifications);
             return Ok(await _productService.Update(productDto, specIds));
         }
