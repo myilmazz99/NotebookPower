@@ -13,7 +13,7 @@
     </PackageReference>
     <PackageReference Include="Iyzipay" Version="2.1.37" />
     <PackageReference Include="NETCore.MailKit" Version="2.0.3" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
     <PackageReference Include="NLog.Extensions.Logging" Version="1.6.4" />
   </ItemGroup>
 
